@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/sonner";
 import Header from "@/components/Header";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import AppSidebar from "@/components/AppSidebar";
+import NoteProvider from "@/providers/NoteProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,15 +33,20 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <SidebarProvider>
-              <Header />
-              <AppSidebar />
-              <main className="flex flex-1 flex-col px-4 pt-10 xl:px-8">
-                <SidebarTrigger />
-                {children}
-              </main>
-            </SidebarProvider>
-          <Toaster />
+            <NoteProvider>
+              <SidebarProvider>
+                <AppSidebar />
+                <div className="flex min-h-screen w-full flex-col">
+                  <Header />
+                  <main className="flex flex-1 flex-col px-4 pt-10 xl:px-8">
+                    
+                    <SidebarTrigger />
+                    {children}
+                  </main>
+                </div>
+              </SidebarProvider>
+            <Toaster />
+          </NoteProvider>
         </ThemeProvider>
       </body>
     </html>
