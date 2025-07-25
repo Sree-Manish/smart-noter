@@ -2,7 +2,9 @@
 
 import { getUser } from "@/auth/server"
 import { prisma } from "@/db/prisma"
+import gemai from "@/gemini"
 import { handleError } from "@/lib/utils"
+import { Content } from "@google/genai"
 
 export const createNoteAction = async ( noteId: string ) => {
     try {
@@ -77,11 +79,11 @@ export const askAIAboutNotesAction = async ( newQuestions: string[], responses: 
             `.trim()
         }).join("\n")
 
-        const prompt: ChatCompletionMessageParam[] = [
+        const contents: Content[] = [
             {
-            role: "developer",
-            content: `
-                You are a helpful assistant that answers questions about a user's notes. 
+            role: "user",
+            parts: [{ text:`
+                You are a helpful assistant that answers questions about a user's notes.
                 Assume all questions are related to the user's notes. 
                 Make sure that your answers are not too verbose and you speak succinctly. 
                 Your responses MUST be formatted in clean, valid HTML with proper structure. 
@@ -94,11 +96,29 @@ export const askAIAboutNotesAction = async ( newQuestions: string[], responses: 
             
                 Here are the user's notes:
                 ${formattedNotes}
-                `
-    }
+                `}]
+        }
         ]
+
+        for (let i = 0; i < newQuestions.length; i++) {
+            contents.push({
+                role: "user",
+                parts: [{ text: newQuestions[i] }]
+            });
+            if (responses.length > i) {
+                contents.push({
+                role: "model",
+                parts: [{ text: responses[i] }]
+                });
+            }
+        }
+
+        const gemresponse = await gemai.models.generateContent({
+            model: "gemini-2.5-flash",
+            contents: contents,
+        })
         
-        return {errorMessage: null}
+        return gemresponse.candidates?.[0]?.content?.parts?.[0]?.text || "A prolem has occured"
     } catch (e) {
         return handleError(e)
     }

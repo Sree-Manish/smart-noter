@@ -11,7 +11,7 @@ const Header = async () => {
   const user = await getUser();
 
   return (
-    <header className="flex w-full justify-between py-[1rem] px-[2rem] shadow-[var(--header)] items-center relative">
+    <header className="flex w-full h-24 justify-between py-[1rem] px-[2rem] shadow-[var(--header)] items-center relative">
         <Link href="/" className="flex gap-4 items-center">
           <Image 
           src="https://imgs.search.brave.com/3N8i8Bvq786fpfwdpOED7McJVg3ENguA9CdwuZCpXTA/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9yYW5k/b20taW1hZ2UtcGVw/ZWJpZ290ZXMudmVy/Y2VsLmFwcC9hcGkv/cmFuZG9tLWltYWdl" 

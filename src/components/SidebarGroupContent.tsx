@@ -48,16 +48,14 @@ function SidebarGroupContentComp({notes}: Props){
         </div>
 
         <SidebarMenu className="mt-4">
-            {filteredNotes.map((note)=>{
-                return (
-                    <SidebarMenuItem key={note.id} className="group/item">
-                        <SelectNoteButton note={note} />
-                        <DeleteNoteButton 
-                        noteId={note.id}
-                        deletenotelocally={deletenotelocally} />
-                    </SidebarMenuItem>
-                )
-            })}
+            {filteredNotes.map((note)=>(
+                <SidebarMenuItem key={note.id} className="group/item">
+                    <SelectNoteButton note={note} />
+                    <DeleteNoteButton 
+                    noteId={note.id}
+                    deletenotelocally={deletenotelocally} />
+                </SidebarMenuItem>
+            ))}
         </SidebarMenu>
     </SidebarGroupContent>
   )

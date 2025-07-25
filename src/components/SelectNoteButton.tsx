@@ -37,11 +37,12 @@ function SelectNoteButton({note}: Props) {
 
   return (
     <SidebarMenuButton asChild className={`items-start gap-0 pr-12 ${note.id === noteId && "bg-sidebar-accent/50"}`}>
-      <Link href={`/?noteId=${note.id}`}className="flex h-fit flex-col"></Link>
-      <p className="w-full overflow-hidden truncate text-ellipsis whitespace-nowrap">
-        {noteText}
-      </p>
-      <p className="text-xs text-muted">{note.updatedAt.toLocaleDateString()}</p>
+      <Link href={`/?noteId=${note.id}`}className="flex h-fit flex-col">
+        <p className="w-full overflow-hidden truncate text-ellipsis whitespace-nowrap">
+          {noteText}
+        </p>
+        <p className="text-xs text-muted">{note.updatedAt.toLocaleDateString()}</p>
+      </Link>
     </SidebarMenuButton>
   )
 }

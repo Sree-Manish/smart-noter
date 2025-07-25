@@ -8,7 +8,7 @@ import { prisma } from "@/db/prisma";
 import { Note } from "@prisma/client";
 import Link from "next/link";
 import { getUser } from "@/auth/server";
-import SidebarGroupContent from "./SidebarGroupContent";
+import SidebarGroupContentComp from "./SidebarGroupContent";
 
 async function AppSidebar() {
     const user = await getUser();
@@ -31,14 +31,14 @@ async function AppSidebar() {
             <SidebarGroupLabel className="my-2 text-lg">
                 { user? "Your Notes" : 
                     <p>
-                        <Link href="/login" className="underlined">
+                        <Link href="/login" className="underline">
                             LogIn
-                        </Link>
+                        </Link>{" "}
                         to see your notes 
                     </p>
                 }
             </SidebarGroupLabel>
-            { user && <SidebarGroupContent notes={notes}/> }
+            { user && <SidebarGroupContentComp notes={notes} /> }
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>

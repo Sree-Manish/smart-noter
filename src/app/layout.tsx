@@ -45,7 +45,7 @@ export default function RootLayout({
                   </main>
                 </div>
               </SidebarProvider>
-            <Toaster />
+            <Toaster richColors />
           </NoteProvider>
         </ThemeProvider>
       </body>

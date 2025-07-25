@@ -1,3 +1,5 @@
+"use client"
+
 import { User } from '@supabase/supabase-js'
 import React, { Fragment, useRef, useState, useTransition } from 'react'
 import {
@@ -12,6 +14,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from './ui/button';
 import { Textarea } from './ui/textarea';
 import { ArrowUpIcon } from 'lucide-react';
+import { askAIAboutNotesAction } from '@/actions/notes';
 
 type Props = {
     user: User | null;
@@ -64,10 +67,19 @@ function AskAIButton({user}: Props) {
     setTimeout(scrollToBottom, 100)
 
     startTransition(async () => {
-      const response = await askAIAboutNotesAction(newQuestions, responses)
-      setResponses((prev)=> [...prev, response])
-
-      setTimeout(scrollToBottom,100)
+      askAIAboutNotesAction(newQuestions, responses)
+    .then((response) => {
+      setResponses((prev) => [
+        ...prev,
+        typeof response === "string"
+          ? response
+          : response?.errorMessage ?? "AI did not return a response"
+      ]);
+      setTimeout(scrollToBottom, 100);
+    })
+    .catch(() => {
+      setResponses((prev) => [...prev, "An error occurred while fetching AI response"]);
+    });
     })
   }
 
