@@ -61,23 +61,29 @@ export const askAIAboutNotesAction = async ( newQuestions: string[], responses: 
         const user = await getUser()
         if(!user) throw new Error("You must be logged in to ask the AI questions")
 
+        console.log(user)
+
         const notes = await prisma.note.findMany({
             where: {authorId : user.id},
             orderBy: { createdAt: "desc"},
             select: {text: true, createdAt: true, updatedAt: true}
         })
 
+        console.log(notes)
+
         if(notes.length === 0){
             return "You dont have any saved notes yet"
         }
 
-        const formattedNotes = notes.map((note) => {
+        const formattedNotes = notes.map((note) => (
             `
             Text: ${note.text}
             Created at: ${note.createdAt}
             Last Updated: ${note.updatedAt}
             `.trim()
-        }).join("\n")
+        )).join("\n")
+
+        console.log(formattedNotes)
 
         const contents: Content[] = [
             {
@@ -100,18 +106,18 @@ export const askAIAboutNotesAction = async ( newQuestions: string[], responses: 
         }
         ]
 
-        for (let i = 0; i < newQuestions.length; i++) {
-            contents.push({
-                role: "user",
-                parts: [{ text: newQuestions[i] }]
-            });
-            if (responses.length > i) {
-                contents.push({
-                role: "model",
-                parts: [{ text: responses[i] }]
-                });
-            }
-        }
+        // for (let i = 0; i < newQuestions.length; i++) {
+        //     contents.push({
+        //         role: "user",
+        //         parts: [{ text: newQuestions[i] }]
+        //     });
+        //     if (responses.length > i) {
+        //         contents.push({
+        //         role: "model",
+        //         parts: [{ text: responses[i] }]
+        //         });
+        //     }
+        // }
 
         const gemresponse = await gemai.models.generateContent({
             model: "gemini-2.5-flash",
