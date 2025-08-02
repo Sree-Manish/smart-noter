@@ -44,7 +44,7 @@ function AuthForm({ type }: Props) {
                 router.replace("/")
             }else {
                 toast.error("Error", {
-                   description
+                   description: "Your Login Credentials are incorrect, Please check them and try again"
                 })
             }
         })
