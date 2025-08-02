@@ -67,7 +67,7 @@ function AskAIButton({user}: Props) {
     setTimeout(scrollToBottom, 100)
 
     startTransition(async () => {
-      askAIAboutNotesAction(newQuestions, responses)
+      askAIAboutNotesAction(newQuestions, responses, questionText)
     .then((response) => {
       setResponses((prev) => [
         ...prev,
@@ -143,7 +143,7 @@ function AskAIButton({user}: Props) {
           value={questionText}
           onChange={(e)=>setQuestionText(e.target.value)}
           >
-            <Button className="ml-auto size-8 rounded-full">
+            <Button className="ml-auto size-8 rounded-full" onClick={handleSubmit}>
               <ArrowUpIcon className="text-bg " />
             </Button>
           </Textarea>
